@@ -3,6 +3,7 @@ Demo with WSO2 Identity Server and User Store managment
 
 
 ## Prepare the ldpa server with the required configuration
+```
 docker cp base-users1.ldif openldap1:/tmp/base-users.ldif
 docker exec -it openldap1 ldapadd -x -D "cn=admin,dc=demo1,dc=org" -w admin -f /tmp/base-users.ldif
 
@@ -15,9 +16,10 @@ docker exec -it openldap2 ldapadd -x -D "cn=admin,dc=demo2,dc=org" -w admin -f /
 
 docker cp groups2.ldif openldap2:/tmp/groups.ldif
 docker exec -it openldap2 ldapadd -x -D "cn=admin,dc=demo2,dc=org" -w admin -f /tmp/groups.ldif
-
+```
 
 ## Generate a new jks
+```
 keytool -genkeypair \
   -alias wso2carbon \
   -keyalg RSA \
@@ -28,4 +30,4 @@ keytool -genkeypair \
   -keypass wso2carbon \
   -dname "CN=wso2is-km, OU=WSO2, O=example, L=Quito, S=Pichincha, C=EC" \
   -ext SAN=dns:wso2is-km,dns:localhost,ip:127.0.0.1
-
+```
