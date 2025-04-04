@@ -1,0 +1,33 @@
+<UserStoreManager class="org.wso2.carbon.user.core.ldap.ReadWriteLDAPUserStoreManager">
+
+    <Property name="ConnectionURL">ldap://openldap2:389</Property>
+    <Property name="ConnectionName">cn=admin,dc=demo2,dc=org</Property>
+    <Property name="ConnectionPassword">admin</Property>
+
+    <Property name="UserSearchBase">ou=Users,dc=demo2,dc=org</Property> 
+    <Property name="UserEntryObjectClass">inetOrgPerson</Property>
+    <Property name="UserNameAttribute">uid</Property>
+    <Property name="UserNameSearchFilter">uid=?</Property>
+    <Property name="UserNameListFilter">(objectClass=inetOrgPerson)</Property>
+
+    <Property name="GroupSearchBase">ou=Groups,dc=demo2,dc=org</Property>
+    <Property name="GroupEntryObjectClass">groupOfNames</Property>
+    <Property name="GroupNameAttribute">cn</Property>
+    <Property name="GroupNameSearchFilter">cn=?</Property>
+    <Property name="GroupNameListFilter">(objectClass=groupOfNames)</Property>
+    <Property name="MembershipAttribute">member</Property>
+    <Property name="MemberOfAttribute">memberOf</Property>
+
+    <Property name="DomainName">AD</Property>
+
+
+    <!-- Opcionales pero útiles -->
+    <Property name="PasswordHashMethod">PLAIN_TEXT</Property>
+    <Property name="PasswordJavaRegEx">^[\S]{5,30}$</Property>
+    <Property name="PasswordJavaScriptRegEx">^[\S]{5,30}$</Property>
+    <Property name="SCIMEnabled">false</Property>
+	
+	<Property name="ReadGroups">true</Property>
+	<Property name="WriteGroups">true</Property> 
+
+</UserStoreManager>

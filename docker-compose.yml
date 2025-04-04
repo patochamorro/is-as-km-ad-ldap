@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  wso2is-km:
+    image: docker.wso2.com/wso2is-km:5.7.0.1707005646732.20-alpine
+    container_name: wso2is-km
+    hostname: wso2is-km
+    ports:
+      - "9443:9443"
+    environment:
+      - JAVA_OPTS=-Dwso2.transport.http.port=9763 -Dwso2.transport.https.port=9443
+    volumes:
+      - ./userstores:/home/wso2carbon/wso2is-km-5.7.0/repository/deployment/server/userstores
+      - ./config/wso2carbon.jks:/home/wso2carbon/wso2is-km-5.7.0/repository/resources/security/wso2carbon.jks
+      - ./config/client-truststore.jks:/home/wso2carbon/wso2is-km-5.7.0/repository/resources/security/client-truststore.jks
+      - ./config/identity.xml:/home/wso2carbon/wso2is-km-5.7.0/repository/conf/identity/identity.xml
+      - ./config/carbon.xml:/home/wso2carbon/wso2is-km-5.7.0/repository/conf/carbon.xml
+
+    depends_on:
+      - openldap1
+      - openldap2
+
+  openldap1:
+    image: osixia/openldap:1.5.0
+    container_name: openldap1
+    environment:
+      - LDAP_ORGANISATION=DemoOrg1
+      - LDAP_DOMAIN=demo1.org
+      - LDAP_ADMIN_PASSWORD=admin
+    ports:
+      - "389:389"
+
+  openldap2:
+    image: osixia/openldap:1.5.0
+    container_name: openldap2
+    environment:
+      - LDAP_ORGANISATION=DemoOrg2
+      - LDAP_DOMAIN=demo2.org
+      - LDAP_ADMIN_PASSWORD=admin
+    ports:
+      - "390:389"
+
+  tomcat85:
+    image: tomcat:8.5
+    container_name: tomcat85
+    ports:
+      - "8088:8080"  # Expondrá Tomcat en http://localhost:8085
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps  # Donde colocas tus archivos .war
+    environment:
+      - JAVA_OPTS=-Dcom.sun.net.ssl.checkRevocation=false -Dcom.sun.net.ssl.hostnameVerifier=ALLOW_ALL
+    
+    depends_on:
+      - wso2is-km
+      
+
